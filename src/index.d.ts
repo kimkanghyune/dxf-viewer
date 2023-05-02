@@ -9,6 +9,7 @@ export type DxfSceneOptions = {
     arcTessellationAngle: number,
     minArcTessellationSubdivisions: number,
     wireframeMesh: boolean,
+    suppressPaperSpace: boolean,
     textOptions: TextRendererOptions,
 }
 
@@ -26,6 +27,7 @@ export type DxfViewerOptions = {
     blackWhiteInversion: boolean,
     pointSize: number,
     sceneOptions: DxfSceneOptions,
+    retainParsedDxf: boolean
 }
 
 export type DxfViewerLoadParams = {
@@ -69,3 +71,21 @@ export declare class DxfViewer {
 export declare namespace DxfViewer {
     export function SetupWorker(): void
 }
+
+export type PatternLineDef = {
+    angle: number
+    base?: THREE.Vector2
+    offset: THREE.Vector2
+    dashes?: number[]
+}
+
+export class Pattern {
+    constructor(lines: PatternLineDef[], name: string | null = null)
+
+    static ParsePatFile(content: String): Pattern
+}
+
+export function RegisterPattern(pattern: Pattern, isMetric: boolean = true): void
+
+/** @return {?Pattern} */
+export function LookupPattern(name: string, isMetric: boolean = true): Pattern | null
